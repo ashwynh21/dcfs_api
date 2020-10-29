@@ -1,5 +1,6 @@
 const path = require('path');
 const copy = require('copy-webpack-plugin');
+const externals = require('webpack-node-externals');
 
 module.exports = {
     mode: 'development',
@@ -36,6 +37,7 @@ module.exports = {
         ],
     },
     target: 'node',
+    externals: [externals()],
     resolve: {
         extensions: [ '.tsx', '.ts', '.js' ],
     },
