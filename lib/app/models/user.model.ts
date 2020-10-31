@@ -33,12 +33,14 @@ export interface UserModel extends Model {
         deductions: number;
         total: number;
     };
-    expenses?: { name: string; amount: number }[];
+    expenses?: { name: string; amount: number; created: Date; updated: Date }[];
     debt?: {
         name: string;
         account: string;
         outstanding: number;
         monthly: number;
+        created: Date;
+        updated: Date;
     }[];
 
     access: Array<string>;
@@ -94,6 +96,8 @@ export const UserSchema = new Schema<UserModel>(
             {
                 name: String,
                 amount: Number,
+                created: Date,
+                updated: Date,
             },
         ],
         debt: [
@@ -102,6 +106,8 @@ export const UserSchema = new Schema<UserModel>(
                 account: String,
                 outstanding: Number,
                 monthly: Number,
+                created: Date,
+                updated: Date,
             },
         ],
     },
