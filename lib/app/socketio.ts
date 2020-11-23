@@ -37,12 +37,12 @@ function bootstrap(app: Ash, socket: io.Socket): Client {
     client.services = {};
     client.meta = socket.handshake.query;
 
-    client.apply = <T extends Socket<T>>(service: T) => {
+    client.apply = <T extends Socket>(service: T) => {
         client.services[service.name] = service;
 
         return client;
     };
-    client.fetch = <T extends Socket<T>>(service: string) => {
+    client.fetch = <T extends Socket>(service: string) => {
         return client.services[service] as T;
     };
 
