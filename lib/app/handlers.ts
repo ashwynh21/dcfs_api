@@ -35,7 +35,8 @@ export = (app: Ash): void => {
 
                 return response.status(413).send(result);
             }
-            return next();
+
+            throw error;
         },
     );
 };

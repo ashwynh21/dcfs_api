@@ -12,13 +12,13 @@ import helmet from 'helmet';
 import compress from 'compression';
 
 export default class Ash implements Application {
-    database: mongoose.Mongoose | undefined;
-
-    http: Express | undefined;
-    io: io.Server | undefined;
+    database!: mongoose.Mongoose;
+    http!: Express;
+    io!: io.Server;
 
     private services: { [name: string]: ServiceInterface } = {};
     private stores: { [name: string]: StoreInterface } = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public configuration: { [name: string]: any } = {};
 
     constructor() {
@@ -88,7 +88,7 @@ interface Application {
 
     authenticate: (data: { token: string }) => Promise<Record<string, unknown>>;
 
-    io?: io.Server;
-    http?: Express;
-    database?: mongoose.Mongoose;
+    io: io.Server;
+    http: Express;
+    database: mongoose.Mongoose;
 }

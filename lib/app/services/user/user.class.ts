@@ -4,22 +4,20 @@ import { UserStore } from '../../store/user.store';
 import Ash from '../../declarations/application';
 import Service from '../../declarations/service';
 
-import services from './user.service';
-
 export class UserService extends Service<UserModel> {
     constructor(context: Ash) {
         super(context, {
-            name: 'user',
-            store: 'user',
+            name: 'users',
+            store: 'users',
         });
-
-        super.addservices(services(this));
     }
 
     public authorize(data: UserModel): Promise<UserModel> {
         if (!data.username) throw Error('Oops, username is required!');
 
-        return (this.context.query('user') as UserStore).storage
+        const settings = this.context.configuration['authorization'];
+
+        return (this.context.query(settings.entity) as UserStore).storage
             .findOne({
                 username: data.username,
                 password: data.password,

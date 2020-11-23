@@ -4,7 +4,7 @@ Here we are going to create a store object that will be used as the interface to
 We are going to connect with mongo db...
  */
 
-import mongoose from 'mongoose';
+import mongoose, { MongooseFilterQuery } from 'mongoose';
 import Ash from './application';
 
 import { Model } from '../helpers/model';
@@ -53,6 +53,10 @@ export default abstract class Store<T extends Model> implements StoreInterface {
 
     public create(data: T): Promise<T> {
         return new this.storage(data).save().then((value) => {
+            /*
+             * We will have to intercept the activity from here, since we want to detect data changes and not HTTP
+             * activity we will have to place the function call here...
+             * */
             return value.toObject();
         });
     }
@@ -80,18 +84,19 @@ export default abstract class Store<T extends Model> implements StoreInterface {
         query = Object.entries(query).reduce((result, [key, value]) => {
             if (typeof value == 'string' && !/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(value)) {
                 if (!result['$or']) {
-                    result['$or'] = [];
+                    result['$or'] = [] as MongooseFilterQuery<T>['$or'];
                 }
-                const data: { [name: string]: RegExp } = {};
-                data[key] = RegExp(value, 'i');
 
-                result['$or'].push(data);
+                const data: Partial<{ [P in keyof T]: RegExp }> = {};
+                data[key as keyof T] = RegExp(value, 'i');
+
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                result['$or']?.push(data as any);
                 return result;
             }
-            result[key] = value;
+            result[key as keyof T] = value;
             return result;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        }, {} as { [name: string]: any }) as mongoose.MongooseFilterQuery<T>;
+        }, {} as mongoose.MongooseFilterQuery<T>);
 
         let created: { [name: string]: Date } | undefined;
         if (data.from) {
@@ -195,3 +200,8 @@ export interface StoreInterface {
     context: Ash;
     storage: mongoose.Model<mongoose.Document>;
 }
+
+/*
+ * We need to consider where to put the activity detection platform in a place that is not too intrusive to the rest
+ * of the structure of the application...
+ * */

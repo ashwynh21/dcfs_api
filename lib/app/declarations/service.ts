@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
-
+import { Model } from '../helpers/model';
 import { Return } from '../helpers/return';
 
 import mongoose from 'mongoose';
 import Ash from './application';
-import { Model } from '../helpers/model';
 
 export default class Service<T extends Model> implements ServiceInterface {
     /*
@@ -80,7 +79,9 @@ export default class Service<T extends Model> implements ServiceInterface {
             Here we can check to see if the service request has an authentication flag so we add authentication
             middleware before any hooks are added to it
              */
-            this.authenticate(value, key);
+            if (value.authenticate) {
+                this.authenticate(value, key);
+            }
 
             /*
             lets add a type for the function callback
@@ -89,7 +90,7 @@ export default class Service<T extends Model> implements ServiceInterface {
 
             const hooker = (callback: Callback, hook: 'before' | 'after') => {
                 Object(this.context.http)[value.method](
-                    `/${this.name}/${key}`,
+                    `/${this.name}${key.length > 0 ? '/' : ''}${key}`,
                     (request: Request, response: Response, next: (data: unknown) => unknown) => {
                         const data = spreader(
                             request.body,
@@ -100,9 +101,9 @@ export default class Service<T extends Model> implements ServiceInterface {
                         return callback(data)
                             .then((result) => {
                                 /*
-                            Currently we make the value returned from the hook remain functional in the hook so
-                            that the hook is independent of its action to the service.
-                             */
+                                Currently we make the value returned from the hook remain functional in the hook so
+                                that the hook is independent of its action to the service.
+                                 */
                                 if (hook == 'before') {
                                     next(result);
                                 } else {
@@ -143,7 +144,7 @@ export default class Service<T extends Model> implements ServiceInterface {
              */
             if (value.callback) {
                 Object(this.context.http)[value.method](
-                    `/${this.name}/${key}`,
+                    `/${this.name}${key.length > 0 ? '/' : ''}${key}`,
                     (request: Request, response: Response, next: (data: unknown) => unknown) => {
                         const data = spreader(
                             request.body,
@@ -397,30 +398,28 @@ export default class Service<T extends Model> implements ServiceInterface {
     We can shift the authentication code to its own function so its more reusable.
      */
     private authenticate(service: Subservice<T>, key: string) {
-        if (service.authenticate) {
-            Object(this.context)[service.method](
-                `/${this.name}/${key}`,
-                (request: Request, response: Response, next: (data?: unknown) => unknown) => {
-                    const data: T & { token: string } = { ...request.body, ...request.query };
-                    /*
-                    This is where the authentication method will go.
-                     */
-                    return Promise.resolve(this.context.authenticate(data))
-                        .then((value) => {
-                            if (!value) throw Error('Oops, authentication error occurred!');
+        Object(this.context)[service.method](
+            `/${this.name}/${key}`,
+            (request: Request, response: Response, next: (data?: unknown) => unknown) => {
+                const data: T & { token: string } = { ...request.body, ...request.query };
+                /*
+                This is where the authentication method will go.
+                 */
+                return Promise.resolve(this.context.authenticate(data))
+                    .then((value) => {
+                        if (!value) throw Error('Oops, authentication error occurred!');
 
-                            next();
-                        })
-                        .catch((error: Error) => {
-                            this.exit(response, data, {
-                                message: 'Oops, authentication error occurred!',
-                                debug: error.message,
-                                status: 412,
-                            });
+                        next();
+                    })
+                    .catch((error: Error) => {
+                        this.exit(response, data, {
+                            message: 'Oops, authentication error occurred!',
+                            debug: error.message,
+                            status: 412,
                         });
-                },
-            );
-        }
+                    });
+            },
+        );
     }
 }
 

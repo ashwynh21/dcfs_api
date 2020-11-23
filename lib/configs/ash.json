@@ -2,14 +2,14 @@
   "host": "localhost",
   "port": 4000,
   "public": "../public/",
-  "mongodb": "mongodb+srv://ashwynh21:gbabY@100@cluster0.wivvf.mongodb.net/dcfs?retryWrites=true&w=majority",
+  "mongodb": "mongodb://localhost:27017/dcfs",
   "authorization": {
     "strategy": "jwt",
     "secret": "mysecret",
     "refresh": "mysecret",
     "expiration": 300,
     "limit": 2.592e6,
-    "entity": "user",
+    "entity": "users",
     "route": "access"
   }
 }

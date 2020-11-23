@@ -8,7 +8,7 @@ import { UserModel, UserSchema } from '../models/user.model';
 export class UserStore extends Store<UserModel> {
     constructor(app: Ash) {
         super(app, {
-            name: 'user',
+            name: 'users',
             storage: UserSchema,
         });
     }
