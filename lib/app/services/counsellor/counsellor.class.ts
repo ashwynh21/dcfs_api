@@ -41,7 +41,6 @@ export class CounsellorService extends Service<CounsellorModel> {
                     pass: 'as28hw01yn95ho61rt00on',
                 },
             });
-
             return transport.sendMail({
                 from: 'DCF',
                 to: email,
