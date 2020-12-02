@@ -31,7 +31,7 @@ export const CounsellorSchema = new Schema<CounsellorModel>(
         mobile: String,
         interest: {
             type: Number,
-            default: 0.02,
+            default: 20,
         },
 
         created: Date,
