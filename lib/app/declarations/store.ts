@@ -38,7 +38,7 @@ export default abstract class Store<T extends Model> {
      * */
     private cache: Cache<T> = { count: 0, data: {} };
 
-    protected constructor(app: Ash, options: Options<T>) {
+    protected constructor(app: Ash, options: Options) {
         this.context = app;
         this.name = options.name;
 
@@ -157,12 +157,12 @@ export default abstract class Store<T extends Model> {
     /*
     we now need to make hooks onto the storage object to be able to update the cache when something changes in the store
      */
-    protected abstract onmodel(schema: Schema<T>): void;
+    protected abstract onmodel(schema: Schema): void;
 
     /*
     let us now make a few more hooks that will update the
      */
-    private hooks(schema: Schema<T>): void {
+    private hooks(schema: Schema): void {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
 
@@ -185,8 +185,8 @@ export default abstract class Store<T extends Model> {
     }
 }
 
-interface Options<T> {
-    storage: Schema<T>;
+interface Options {
+    storage: Schema;
     name: string;
 }
 
