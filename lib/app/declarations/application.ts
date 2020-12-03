@@ -1,7 +1,7 @@
 import { Express } from 'express';
-import Service, { ServiceInterface } from './service';
-import Store, { StoreInterface } from './store';
 import { Model } from '../helpers/model';
+import Service from './service';
+import Store from './store';
 
 import io from 'socket.io';
 import mongoose from 'mongoose';
@@ -16,8 +16,8 @@ export default class Ash implements Application {
     http!: Express;
     io!: io.Server;
 
-    private services: { [name: string]: ServiceInterface } = {};
-    private stores: { [name: string]: StoreInterface } = {};
+    private services: { [name: string]: <T extends Model>() => Service<T> } = {};
+    private stores: { [name: string]: <T extends Model>() => Store<T> } = {};
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public configuration: { [name: string]: any } = {};
 
@@ -43,22 +43,22 @@ export default class Ash implements Application {
     }
 
     public apply<T extends Model>(service: Service<T>): Service<T> {
-        this.services[service.name] = service;
+        this.services[service.name] = <T extends Model>() => (service as unknown) as Service<T>;
 
         return service;
     }
 
     public commit<T extends Model>(store: Store<T>): Store<T> {
-        this.stores[store.name] = store;
+        this.stores[store.name] = <T extends Model>() => (store as unknown) as Store<T>;
         return store;
     }
 
     public fetch<T extends Model>(service: string): Service<T> {
-        return this.services[service] as Service<T>;
+        return this.services[service]();
     }
 
     public query<T extends Model>(store: string): Store<T> {
-        return this.stores[store] as Store<T>;
+        return this.stores[store]();
     }
 
     public configure(callback: (app: Ash) => void): Ash {
