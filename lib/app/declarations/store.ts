@@ -57,7 +57,7 @@ export default abstract class Store<T extends Model> {
              * We will have to intercept the activity from here, since we want to detect data changes and not HTTP
              * activity we will have to place the function call here...
              * */
-            return value.toObject();
+            return value.toJSON();
         });
     }
 

@@ -5,7 +5,7 @@ import { Return } from '../helpers/return';
 import mongoose from 'mongoose';
 import Ash from './application';
 
-export default class Service<T extends Model> implements ServiceInterface {
+export default class Service<T extends Model> {
     /*
      * We need to keep a separate reference to the storage system, hence we will need the base class that connects to
      * the data system
@@ -474,12 +474,6 @@ export interface Subservice<T> {
 
 export interface Microservices<T> {
     [route: string]: Subservice<T>;
-}
-
-export interface ServiceInterface {
-    hooks?: ServiceHooks;
-    name: string;
-    context: Ash;
 }
 
 export interface ServiceHooks {
