@@ -4,7 +4,7 @@ Here we are going to create a store object that will be used as the interface to
 We are going to connect with mongo db...
  */
 
-import mongoose, { MongooseFilterQuery } from 'mongoose';
+import mongoose, { MongooseFilterQuery, MongooseUpdateQuery, UpdateQuery } from 'mongoose';
 import Ash from './application';
 
 import { Model } from '../helpers/model';
@@ -128,9 +128,9 @@ export default abstract class Store<T extends Model> {
 
     public update(data: T): Promise<T> {
         return this.storage
-            .updateOne({ _id: data._id }, <mongoose.MongooseUpdateQuery<T>>{
-                $set: <mongoose.UpdateQuery<T>>data,
-            })
+            .updateOne({ _id: data._id }, ({
+                $set: data as Readonly<T>,
+            } as unknown) as UpdateQuery<T>)
             .then((value) => {
                 if (!value) throw Error(`Oops, ${this.name} does not exist!`);
 
