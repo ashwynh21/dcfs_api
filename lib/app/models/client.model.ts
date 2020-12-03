@@ -73,10 +73,10 @@ export const ClientSchema = new Schema(
 
         employment: new Schema({
             name: String,
-            postal: {
+            postal: new Schema({
                 address: String,
                 code: String,
-            },
+            }),
         }),
         income: new Schema({
             statement: {
