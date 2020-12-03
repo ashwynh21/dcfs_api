@@ -4,7 +4,7 @@ Here we are going to create a store object that will be used as the interface to
 We are going to connect with mongo db...
  */
 
-import mongoose, { MongooseFilterQuery, MongooseUpdateQuery, UpdateQuery } from 'mongoose';
+import mongoose, { MongooseFilterQuery, UpdateQuery } from 'mongoose';
 import Ash from './application';
 
 import { Model } from '../helpers/model';
