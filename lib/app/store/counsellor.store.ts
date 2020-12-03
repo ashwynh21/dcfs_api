@@ -16,7 +16,7 @@ export class CounsellorStore extends Store<CounsellorModel> {
          * */
     }
 
-    protected onmodel(schema: mongoose.Schema<CounsellorModel>): void {
+    protected onmodel(schema: mongoose.Schema): void {
         /*
          * */
     }

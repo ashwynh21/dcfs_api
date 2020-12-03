@@ -20,7 +20,7 @@ export class ClientStore extends Store<ClientModel> {
          * */
     }
 
-    protected onmodel(schema: mongoose.Schema<ClientModel>): void {
+    protected onmodel(schema: mongoose.Schema): void {
         /*
          * */
     }
