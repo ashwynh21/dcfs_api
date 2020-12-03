@@ -59,50 +59,50 @@ export const ClientSchema = new Schema(
         fullname: String,
         email: String,
 
-        marital: {
+        marital: new Schema({
             fullname: String,
             pin: String,
             dependents: Number,
-        },
+        }),
         physical: String,
-        postal: {
+        postal: new Schema({
             address: String,
             code: String,
-        },
+        }),
         mobile: String,
 
-        employment: {
+        employment: new Schema({
             name: String,
             postal: {
                 address: String,
                 code: String,
             },
-        },
-        income: {
+        }),
+        income: new Schema({
             statement: {
                 type: String,
                 select: false,
             },
             gross: Number,
             deductions: Number,
-        },
+        }),
         expenses: [
-            {
+            new Schema({
                 name: String,
                 amount: Number,
                 created: Date,
                 updated: Date,
-            },
+            }),
         ],
         debts: [
-            {
+            new Schema({
                 name: String,
                 account: String,
                 outstanding: Number,
                 monthly: Number,
                 created: Date,
                 updated: Date,
-            },
+            }),
         ],
 
         state: {
