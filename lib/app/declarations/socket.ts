@@ -49,7 +49,7 @@ export default abstract class Socket implements SocketInterface {
     /*
     The first hook that we will be adding is an on-create hook that will have the socket object in it.
      */
-    protected abstract async onready(): Promise<void>;
+    protected abstract onready(): Promise<void>;
 
     /*
     Let us create a function that will allow us to easily emit events using the client object

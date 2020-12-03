@@ -1,6 +1,6 @@
 import { Express } from 'express';
-import Service from './service';
-import Store from './store';
+import Service, { ServiceInterface } from './service';
+import Store, { StoreInterface } from './store';
 import { Model } from '../helpers/model';
 
 import io from 'socket.io';
@@ -16,10 +16,8 @@ export default class Ash implements Application {
     http!: Express;
     io!: io.Server;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private services: { [name: string]: any } = {};
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private stores: { [name: string]: any } = {};
+    private services: { [name: string]: ServiceInterface } = {};
+    private stores: { [name: string]: StoreInterface } = {};
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public configuration: { [name: string]: any } = {};
 
