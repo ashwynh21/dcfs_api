@@ -9,7 +9,7 @@ import Ash from './application';
 
 import { Model } from '../helpers/model';
 
-export default abstract class Store<T extends Model> implements StoreInterface {
+export default abstract class Store<T extends Model> {
     /*
     let us consider the other base class that hold interfaces to their corresponding servers and how they operate so
     that we are able to build in the same style to this context of the database server.
@@ -193,12 +193,6 @@ interface Options<T> {
 interface Cache<T> {
     count: number;
     data: { [id: string]: T };
-}
-
-export interface StoreInterface {
-    name: string;
-    context: Ash;
-    storage: mongoose.Model<mongoose.Document>;
 }
 
 /*
