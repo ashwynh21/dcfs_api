@@ -131,7 +131,7 @@ export default abstract class Store<T extends Model> {
             .updateOne({ _id: data._id }, ({
                 $set: data as Readonly<T>,
             } as unknown) as UpdateQuery<T>)
-            .then((value) => {
+            .then((value: undefined | unknown) => {
                 if (!value) throw Error(`Oops, ${this.name} does not exist!`);
 
                 return data;
