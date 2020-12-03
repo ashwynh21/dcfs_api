@@ -48,7 +48,7 @@ export interface ClientModel extends Model {
     state: string;
 }
 
-export const ClientSchema = new Schema<ClientModel>(
+export const ClientSchema = new Schema(
     {
         counsellor: {
             type: Types.ObjectId,

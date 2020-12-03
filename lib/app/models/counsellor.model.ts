@@ -17,7 +17,7 @@ export interface CounsellorModel extends Model {
     interest: number;
 }
 
-export const CounsellorSchema = new Schema<CounsellorModel>(
+export const CounsellorSchema = new Schema(
     {
         name: String,
         fsra: {

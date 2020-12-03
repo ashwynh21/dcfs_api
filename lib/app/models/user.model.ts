@@ -11,7 +11,7 @@ export interface UserModel extends Model {
     access: Array<string>;
 }
 
-export const UserSchema = new Schema<UserModel>(
+export const UserSchema = new Schema(
     {
         username: {
             type: String,

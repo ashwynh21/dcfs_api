@@ -166,18 +166,18 @@ export default abstract class Store<T extends Model> {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
 
-        schema.post('save', function (value, next) {
+        schema.post('save', function (value, next: (error?: Error) => void) {
             self.cache.data[value._id.toString()] = (value as unknown) as T;
             self.cache.count++;
 
             next();
         });
-        schema.post('update', function (value, next) {
+        schema.post('update', function (value, next: (error?: Error) => void) {
             self.cache.data[value._id.toString()] = (value as unknown) as T;
 
             next();
         });
-        schema.post('remove', function (value, next) {
+        schema.post('remove', function (value, next: (error?: Error) => void) {
             delete self.cache.data[value._id.toString()];
 
             next();
