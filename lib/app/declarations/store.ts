@@ -4,7 +4,7 @@ Here we are going to create a store object that will be used as the interface to
 We are going to connect with mongo db...
  */
 
-import mongoose, { MongooseFilterQuery, UpdateQuery } from 'mongoose';
+import mongoose, { MongooseFilterQuery, UpdateQuery, Schema } from 'mongoose';
 import Ash from './application';
 
 import { Model } from '../helpers/model';
@@ -157,12 +157,12 @@ export default abstract class Store<T extends Model> {
     /*
     we now need to make hooks onto the storage object to be able to update the cache when something changes in the store
      */
-    protected abstract onmodel(schema: mongoose.Schema<T>): void;
+    protected abstract onmodel(schema: Schema<T>): void;
 
     /*
     let us now make a few more hooks that will update the
      */
-    private hooks(schema: mongoose.Schema<T>): void {
+    private hooks(schema: Schema<T>): void {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
 
@@ -186,7 +186,7 @@ export default abstract class Store<T extends Model> {
 }
 
 interface Options<T> {
-    storage: mongoose.Schema<T>;
+    storage: Schema<T>;
     name: string;
 }
 
