@@ -28,8 +28,8 @@ export default class Ash implements Application {
             /*
 			lets also make sure that we handle to input maximum size to prevent payload too large errors
 			 */
-            .use(express.json({ limit: '512kb' }))
-            .use(express.urlencoded({ limit: '512kb', extended: true }))
+            .use(express.json({ limit: '3mb' }))
+            .use(express.urlencoded({ limit: '3mb', extended: true }))
             .use(multer().any())
             /*
 			we have to start by settings cors allow cross origin to all first
